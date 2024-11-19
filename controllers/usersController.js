@@ -1,3 +1,4 @@
+const { search } = require('../routes/userRouter');
 const usersStorage = require('../storages/usersStorage');
 const { body, validationResult } = require('express-validator');
 
@@ -46,8 +47,8 @@ exports.usersCreatePost = [
                 errors: errors.array(),
             });
         }
-        const { firstName, lastName } = req.body;
-        usersStorage.addUser({ firstName, lastName });
+        const { firstName, lastName, email, age, bio } = req.body;
+        usersStorage.addUser({ firstName, lastName, email, age, bio });
         res.redirect('/');
     }
 ]
@@ -72,8 +73,8 @@ exports.usersUpdatePost = [
                 errors: errors.array(),
             });
         }
-        const { firstName, lastName } = req.body;
-        usersStorage.updateUser(req.params.id, { firstName, lastName });
+        const { firstName, lastName, email, age, bio } = req.body;
+        usersStorage.updateUser(req.params.id, { firstName, lastName, email, age, bio });
         res.redirect('/');
     }
 ]
@@ -82,4 +83,10 @@ exports.usersUpdatePost = [
 exports.usersDeletePost = (req, res) => {
     usersStorage.deleteUser(req.params.id);
     res.redirect('/');
+}
+
+exports.searchUsers = (req, res) => {
+    const searchQuery = req.query;
+    const value = usersStorage.findUser(searchQuery);
+    console.log(value);
 }
