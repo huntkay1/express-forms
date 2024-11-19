@@ -28,17 +28,19 @@ class usersStorage {
 
     findUser(query) {
         const users = Object.values(this.storage);
-        return users.find(user => {
-            const matchesName = query.name
-                ? `${user.firstName} ${user.lastName}`.toLowerCase().includes(query.name.toLowerCase())
-                : true;
-            const matchesEmail = query.email
-                ? user.email.toLowerCase().includes(query.email.toLowerCase())
-                : true;
+        const searchTerms = query.search.toLowerCase().split(/\s+/); // Split query into individual terms
     
-            return matchesName && matchesEmail; // Match both if both are specified
+        return users.find(user => {
+            // Construct a full name for easier matching
+            const fullName = `${user.firstName} ${user.lastName}`.toLowerCase();
+            const email = user.email.toLowerCase();
+    
+            // Check if any search term matches either the full name or the email
+            return searchTerms.some(term => fullName.includes(term) || email.includes(term));
         });
     }
+    
+    
 }
 
 // Rather than exporting the class, we can export an instance of the class by instantiating it.
