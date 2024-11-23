@@ -87,6 +87,6 @@ exports.usersDeletePost = (req, res) => {
 
 exports.searchUsers = (req, res) => {
     const searchQuery = req.query;
-    const value = usersStorage.findUser(searchQuery);
-    console.log(value);
+    const searchResult = usersStorage.findUser(searchQuery);
+    res.render('search', { searchResult: searchResult, title: searchResult.firstName })
 }
